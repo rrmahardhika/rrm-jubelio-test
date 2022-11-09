@@ -1,19 +1,19 @@
-function ItemWrapper() {
-  const cars = [
-    { id: 1, brand: "Ford" },
-    { id: 2, brand: "BMW" },
-    { id: 3, brand: "Audi" },
-    { id: 3, brand: "Audi" },
-  ];
+import Product from "./product";
+import { observer } from "mobx-react-lite";
+const ItemWrapper = observer(({ ProductList, ModalState }) => {
   return (
     <div className="container-fluid">
       <div className="row">
-        {cars.map((car) => (
-          <div className="col-lg-3 col-md-6 col-12 p-3">Ini Baris</div>
+        {ProductList.product.map((prod) => (
+          <Product
+            key={prod.sku}
+            Product={prod}
+            ModalState={ModalState}
+          ></Product>
         ))}
       </div>
     </div>
   );
-}
+});
 
 export default ItemWrapper;
