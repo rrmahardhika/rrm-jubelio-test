@@ -68,7 +68,9 @@ const Dialog = observer(({ ModalState }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="danger">Delete</Button>
+          <Button variant="danger" disabled={!ModalState.edit_mode}>
+            Delete
+          </Button>
           <Button variant="primary">
             {ModalState.edit_mode ? "Save Changes" : "Save New Product"}
           </Button>

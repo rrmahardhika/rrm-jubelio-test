@@ -1,8 +1,9 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
-const baseURL =
-  "https://codetesting.jubelio.store/wp-json/wc/v3/products?consumer_key=ck_1cbb2c1902d56b629cd9a555cc032c4b478b26ce&consumer_secret=cs_7be10f0328c5b1d6a1a3077165b226af71d8b9dc";
-
+const baseURL = "http://localhost:3030";
+const config = {
+  headers: {},
+};
 export class ProductList {
   product = [
     {
@@ -56,8 +57,9 @@ export class ProductList {
     makeAutoObservable(this);
   }
   getProductList = () => {
-    axios.get(baseURL).then((response) => {
-      console.log(response);
+    axios.get(baseURL, config).then((response) => {
+      console.log("res", response);
+      this.product = response.data;
     });
   };
   loadMore = () => {
