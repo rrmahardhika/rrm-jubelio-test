@@ -35,8 +35,10 @@ const init = async () => {
         response.data.forEach((product) => {
           //check data validation. if not, auto-assign default value
           if (product.slug == "") product.slug = "DEFAULT PRODUCT NAME"; //use slug due to all products have same name
-          if (product.price == "") product.price = 0;
+          if (product.price == "") product.price = "0";
           if (product.sku == "") product.sku = uuidv4();
+          if (product.description == "")
+            product.description = "Default Description";
           if (product.images) {
             product.images =
               "http://www.rcdrilling.com/wp-content/uploads/2013/12/default_image_01-1024x1024-570x760.png";

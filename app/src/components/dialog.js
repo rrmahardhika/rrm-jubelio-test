@@ -2,13 +2,14 @@ import { observer } from "mobx-react-lite";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-const Dialog = observer(({ ModalState }) => {
+
+const Dialog = observer(({ MyState }) => {
   return (
     <>
-      <Modal size="xl" show={ModalState.show} onHide={ModalState.closeModal}>
+      <Modal size="xl" show={MyState.show} onHide={MyState.closeModal}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {ModalState.edit_mode ? "Detail Produk" : "Entri Produk"}
+            {MyState.edit_mode ? "Detail Produk" : "Entri Produk"}
           </Modal.Title>
         </Modal.Header>
 
@@ -18,7 +19,7 @@ const Dialog = observer(({ ModalState }) => {
               <img
                 className="img-thumbnail"
                 alt="product"
-                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZHVjdHxlbnwwfHwwfHw%3D&w=1000&q=80"
+                src={MyState.modal_data.Image}
               ></img>
             </div>
             <div className="col-12 col-md-6 modal-form">
@@ -28,7 +29,8 @@ const Dialog = observer(({ ModalState }) => {
                   <Form.Control
                     type="text"
                     placeholder=""
-                    defaultValue={ModalState.modal_data.name}
+                    value={MyState.modal_data.Name}
+                    onChange={(evt) => MyState.updateProductName(evt)}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="sku">
@@ -36,7 +38,8 @@ const Dialog = observer(({ ModalState }) => {
                   <Form.Control
                     type="text"
                     placeholder=""
-                    defaultValue={ModalState.modal_data.sku}
+                    value={MyState.modal_data.SKU}
+                    onChange={(evt) => MyState.updateSKU(evt)}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="price">
@@ -44,7 +47,8 @@ const Dialog = observer(({ ModalState }) => {
                   <Form.Control
                     type="number"
                     placeholder=""
-                    defaultValue={ModalState.modal_data.price}
+                    value={MyState.modal_data.Price}
+                    onChange={(evt) => MyState.updatePrice(evt)}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="description">
@@ -52,14 +56,16 @@ const Dialog = observer(({ ModalState }) => {
                   <Form.Control
                     as="textarea"
                     rows={4}
-                    defaultValue={ModalState.modal_data.description}
+                    value={MyState.modal_data.Description}
+                    onChange={(evt) => MyState.updateDescription(evt)}
                   />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="description">
+                <Form.Group className="mb-3" controlId="image">
                   <Form.Label>Image Link</Form.Label>
                   <Form.Control
                     type="text"
-                    defaultValue={ModalState.modal_data.images}
+                    value={MyState.modal_data.Image}
+                    onChange={(evt) => MyState.updateImage(evt)}
                   />
                 </Form.Group>
               </Form>
@@ -68,11 +74,20 @@ const Dialog = observer(({ ModalState }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="danger" disabled={!ModalState.edit_mode}>
+          <Button
+            variant="danger"
+            disabled={!MyState.edit_mode}
+            onClick={MyState.deleteData}
+          >
             Delete
           </Button>
-          <Button variant="primary">
-            {ModalState.edit_mode ? "Save Changes" : "Save New Product"}
+          <Button
+            variant="primary"
+            onClick={
+              MyState.edit_mode ? MyState.updateData : MyState.submitData
+            }
+          >
+            {MyState.edit_mode ? "Save Changes" : "Save New Product"}
           </Button>
         </Modal.Footer>
       </Modal>

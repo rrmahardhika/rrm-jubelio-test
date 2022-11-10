@@ -107,3 +107,7 @@
 .modal-form {
   font-family: Poppins;
 }
+
+.stay-on-top {
+  z-index: 9999;
+}

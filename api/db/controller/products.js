@@ -9,38 +9,48 @@ class ProductsRepository {
   }
 
   async add(product) {
-    return this.db
-      .one(
-        `SELECT COUNT(*) FROM public."Products" where "SKU"='${product.SKU}'`
-      )
-      .then((res) => {
-        if (parseInt(res.count) > 0) {
-          throw "SKU already exists!";
-        }
-        {
-          return this.db
-            .any(
-              `INSERT INTO public."Products" values ('${product.Name}', '${product.SKU}', '${product.Image}', '${product.Description}', '${product.Price}')`
-            )
-            .then((res) => {
-              return {
-                success: true,
-                message: "Berhasil Input Produk",
-                data: res,
-                code: 200,
-              };
-            });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        return {
-          success: false,
-          message: error,
-          data: null,
-          code: 400,
-        };
-      });
+    var validation = validateInput(product);
+    if (validation.valid) {
+      return this.db
+        .one(
+          `SELECT COUNT(*) FROM public."Products" where "SKU"='${product.SKU}'`
+        )
+        .then((res) => {
+          if (parseInt(res.count) > 0) {
+            throw "SKU already exists!";
+          }
+          {
+            return this.db
+              .any(
+                `INSERT INTO public."Products" values ('${product.Name}', '${product.SKU}', '${product.Image}', '${product.Description}', '${product.Price}')`
+              )
+              .then((res) => {
+                return {
+                  success: true,
+                  message: "Berhasil Input Produk",
+                  data: res,
+                  code: 200,
+                };
+              });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          return {
+            success: false,
+            message: error,
+            data: null,
+            code: 400,
+          };
+        });
+    } else {
+      return {
+        success: false,
+        message: "Invalid request",
+        data: validation.error_list,
+        code: 400,
+      };
+    }
   }
 
   async remove(id) {
@@ -156,7 +166,7 @@ class ProductsRepository {
 
         return this.db
           .any(
-            `SELECT * FROM public."Products" ORDER BY "SKU" ASC LIMIT ${itemsPerPage} OFFSET ${offset}`
+            `SELECT * FROM public."Products" ORDER BY "Name" ASC LIMIT ${itemsPerPage} OFFSET ${offset}`
           )
           .then((res) => {
             return {
