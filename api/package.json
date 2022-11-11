@@ -26,7 +26,6 @@
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
     "hapi-pg-promise": "^2.0.0",
-    "pg-monitor": "^1.5.0",
     "pg-promise": "^10.12.1",
     "uuid": "^9.0.0"
   }
